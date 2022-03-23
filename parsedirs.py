@@ -19,5 +19,5 @@ for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
                 if parent == category:
                     parent = ""
                 else:
-                    print('parent = ' parent)
+                    print('parent = ' + parent)
             print('---')
