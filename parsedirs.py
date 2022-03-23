@@ -1,5 +1,7 @@
 import os
-ignorelist = os.environ["INPUT_IGNORELIST"]
+srcignorelist = os.environ["INPUT_IGNORELIST"]
+ignorelist = [x.strip() for x in srcignorelist.split(',')
+              if not srcignorelist == '']
 docsdirectory = os.environ["INPUT_DOCSDIRECTORY"]
 print('Ignorelist: ' + ignorelist)
 print('Docs directory: ' + docsdirectory)

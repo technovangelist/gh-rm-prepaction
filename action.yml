@@ -6,9 +6,9 @@ inputs:
     required: true
     default: "./docs"
   ignorelist:
-    description: "Array of directories under the docs directory we should ignore"
+    description: "Comma separated list of directories under the docs directory we should ignore"
     required: true
-    default: '["images"]'
+    default: "images"
 outputs:
   time: # id of output
     description: "The time we greeted you"
