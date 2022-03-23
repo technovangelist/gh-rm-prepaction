@@ -3,7 +3,7 @@ srcignorelist = os.environ["INPUT_IGNORELIST"]
 ignorelist = [x.strip() for x in srcignorelist.split(',')
               if not srcignorelist == '']
 docsdirectory = os.environ["INPUT_DOCSDIRECTORY"]
-# print('Ignorelist: ' + ignorelist)
+print(*ignorelist, sep=':::')
 # print('Docs directory: ' + docsdirectory)
 
 for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
