@@ -9,7 +9,7 @@ docsdirectory = os.environ["INPUT_DOCSDIRECTORY"]
 categoriesresponse = requests.get(
     'https://dash.readme.com/api/v1/categories?perPage=10&page=1', headers={'Authorization': 'Basic ' + os.environ["readmeapikey"]})
 if categoriesresponse.status_code == 200:
-    categories = json.loads(categoriesresponse.json())
+    categories = categoriesresponse.json()
 
     # curl - -request GET \
     #      - -url 'https://dash.readme.com/api/v1/categories?perPage=10&page=1' \
