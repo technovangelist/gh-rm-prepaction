@@ -8,13 +8,14 @@ print('Docs directory: ' + docsdirectory)
 
 for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
     # listoffiles += [os.path.join(dirpath, file) for file in filenames]
+    print('dirpath: ' + dirpath)
     if not any(dirpath.startswith(ignore) for ignore in ignorelist):
-        print(filenames)
+        print('filenames: ' + filenames)
         for file in filenames:
 
             fullpath = os.path.join(dirpath, file).split('/')[2:]
 
-            print(fullpath)
+            print('fullpath: ' + fullpath)
             print('category = ' + fullpath[0])
             if len(fullpath) > 2:
                 print('parent = ' + fullpath[-2])
