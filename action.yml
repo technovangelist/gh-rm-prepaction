@@ -1,17 +1,17 @@
-name: 'GitHub Readme Sync Prep'
-description: 'Generate all the Markdown Frontmatter needed by Readme.io so your docs look cleaner in GitHub.'
+name: "GitHub Readme Sync Prep"
+description: "Generate all the Markdown Frontmatter needed by Readme.io so your docs look cleaner in GitHub."
 inputs:
-  docsdirectory:  
-    description: 'Name of directory we will look at'
+  docsdirectory:
+    description: "Name of directory we will look at"
     required: true
-    default: './docs'
+    default: "./docs"
   ignorelist:
-    description: 'Array of directories under the docs directory we should ignore'
+    description: "Array of directories under the docs directory we should ignore"
     required: true
-    default: ['images']
+    default: ["images"]
 outputs:
   time: # id of output
-    description: 'The time we greeted you'
+    description: "The time we greeted you"
 runs:
-  using: 'docker'
-  main: 'Dockerfile'
+  using: "docker"
+  image: "Dockerfile"
