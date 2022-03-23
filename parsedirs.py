@@ -9,8 +9,9 @@ for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
         for file in filenames:
             fullpath = os.path.join(dirpath, file).split('/')[1:]
             title = fullpath[-1]
+            category = fullpath[0]
             print('title = ' + title)
-            print('category = ' + fullpath[0])
+            print('category = ' + category)
             if len(fullpath) > 2:
                 parent = fullpath[-2]
                 if parent == title.replace('.md', ''):
