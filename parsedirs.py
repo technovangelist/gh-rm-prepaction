@@ -15,7 +15,7 @@ for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
 
             fullpath = os.path.join(dirpath, file).split('/')[2:]
 
-            print('fullpath: ' + fullpath)
+            print('fullpath: ' + '::'.join(fullpath))
             print('category = ' + fullpath[0])
             if len(fullpath) > 2:
                 print('parent = ' + fullpath[-2])
