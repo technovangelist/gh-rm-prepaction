@@ -1,9 +1,18 @@
 import os
+import requests
+
 srcignorelist = os.environ["INPUT_IGNORELIST"]
 ignorelist = [x.strip() for x in srcignorelist.split(',')
               if not srcignorelist == '']
 docsdirectory = os.environ["INPUT_DOCSDIRECTORY"]
+categoriesresponse = requests.get(
+    'https://dash.readme.com/api/v1/categories?perPage=10&page=1', headers={'Authorization': 'Basic ' + os.environ["INPUT_READMEAPIKEY"]})
 
+print(categoriesresponse)
+
+# curl - -request GET \
+#      - -url 'https://dash.readme.com/api/v1/categories?perPage=10&page=1' \
+#      - -header 'Authorization: Basic R1ZUalN3bEp3RVRkbllWOEdtQ3F1YW00bGROV2FibUE6'
 for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
     if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
         for file in filenames:
