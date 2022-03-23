@@ -12,8 +12,9 @@ for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
     if not any(dirpath.startswith(ignore) for ignore in ignorelist):
         print('filenames: ' + '::'.join(filenames))
         for file in filenames:
-
-            fullpath = os.path.join(dirpath, file).split('/')[2:]
+            print('dirpath: ' + dirpath)
+            print('file: ' + file)
+            fullpath = os.path.join(dirpath, file).split('/')[1:]
 
             print('fullpath: ' + '::'.join(fullpath))
             print('category = ' + fullpath[0])
