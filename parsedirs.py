@@ -14,6 +14,7 @@ for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
         for file in filenames:
             # print('dirpath: ' + dirpath)
             # print('file: ' + file)
+
             fullpath = os.path.join(dirpath, file).split('/')[1:]
 
             # print('fullpath: ' + '::'.join(fullpath))
@@ -21,3 +22,4 @@ for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
             if len(fullpath) > 2:
                 print('parent = ' + fullpath[-2])
             print('title = ' + fullpath[-1])
+            print('---')
