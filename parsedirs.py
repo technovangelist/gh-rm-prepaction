@@ -9,7 +9,7 @@ print('Docs directory: ' + docsdirectory)
 for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
     # listoffiles += [os.path.join(dirpath, file) for file in filenames]
     print('dirpath: ' + dirpath)
-    if not any(dirpath.startswith(ignore) for ignore in ignorelist):
+    if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
         print('filenames: ' + '::'.join(filenames))
         for file in filenames:
             print('dirpath: ' + dirpath)
