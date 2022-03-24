@@ -7,6 +7,17 @@ parentdocs = list()
 rawreadmeapikey = os.environ["INPUT_READMEAPIKEY"]
 readmeapikey = base64.b64encode(
     rawreadmeapikey.encode('utf-8')).decode('utf-8')
+versionnumber = os.environ["INPUT_VERSIONNUMBER"]
+existingversions = requests.get("https://dash.readme.com/api/v1/version", headers={
+                                'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json'}).json()
+existingversions.sort(key=lambda x: StrictVersion(x['version']), reverse=True)
+if not [x for x in existingversions if x["version"]
+        == versionnumber]:
+    print("Creating a new version number")
+    requests.post("https://dash.readme.com/api/v1/version", headers={
+        'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'Content-Type': 'application/json'}, json={"is_beta": True, "version": versionnumber, "from": existingversions[0]["version"], "is_stable": False, "is_hidden": False}).json()
+
+
 srcignorelist = os.environ["INPUT_IGNORELIST"]
 ignorelist = [x.strip() for x in srcignorelist.split(',')
               if not srcignorelist == '']

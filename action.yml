@@ -12,6 +12,9 @@ inputs:
   readmeapikey:
     description: "API Key for readme.io"
     required: true
+  versionnumber:
+    description: "Readme version number"
+    required: true
 runs:
   using: "docker"
   image: "Dockerfile"
