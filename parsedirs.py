@@ -23,9 +23,13 @@ if categoriesresponse.status_code == 200:
                 categoryinfo = categories
                 with open(os.path.join(dirpath, file)) as f:
                     filetitle = f.readline().rstrip().replace('# ', '')
+                titlestring = "title: " + filetitle + "\n"
                 print('title = ' + filetitle)
                 print('filename = ' + filename)
                 print('category = ' + category + ' (' + str(categoryid) + ')')
+                categorystring = "category: " + categoryid + "\n"
+                hiddenstring = "hidden: false\n"
+                parentdocstring = ""
                 if len(fullpath) > 2:
                     parent = fullpath[-2]
                     if parent == filename.replace('.md', ''):
@@ -45,5 +49,7 @@ if categoriesresponse.status_code == 200:
                         parentdocs.append((parent, parentid))
                         print('parent = ' + parent +
                               ' (' + str(parentid) + ')')
-                print('parent = ' + parent)
-                print('---')
+                        parentdocstring = "parentDoc: " + str(parentid) + "\n"
+
+                print("---\n"+titlestring+categorystring +
+                      hiddenstring+parentdocstring+"---\n")
