@@ -102,9 +102,9 @@ if categoriesresponse.status_code == 200:
                                               'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
                 print("Document Status Code: " +
                       str(documentExists.status_code))
-                print("Document JSON: " + str(documentExists.json()))
-                print("headers: " + json.dumps(headers))
-                print("payload: " + json.dumps(payload))
+                # print("Document JSON: " + str(documentExists.json()))
+                # print("headers: " + json.dumps(headers))
+                # print("payload: " + json.dumps(payload))
                 if documentExists.status_code != 200:
                     print("Creating document: " + slug +
                           ", version: " + versionnumber)
