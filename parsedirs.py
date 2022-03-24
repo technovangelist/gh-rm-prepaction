@@ -24,9 +24,9 @@ if categoriesresponse.status_code == 200:
                 with open(os.path.join(dirpath, file)) as f:
                     filetitle = f.readline().rstrip().replace('# ', '')
                 titlestring = "title: " + filetitle + "\n"
-                print('title = ' + filetitle)
-                print('filename = ' + filename)
-                print('category = ' + category + ' (' + str(categoryid) + ')')
+                # print('title = ' + filetitle)
+                # print('filename = ' + filename)
+                # print('category = ' + category + ' (' + str(categoryid) + ')')
                 categorystring = "category: " + categoryid + "\n"
                 hiddenstring = "hidden: false\n"
                 parentdocstring = ""
@@ -40,15 +40,15 @@ if categoriesresponse.status_code == 200:
                         existingparentdocid = [
                             doc for doc in parentdocs if doc[0] == parent]
                         if len(existingparentdocid) == 0:
-                            print("searching for parent id")
+                            # print("searching for parent id")
                             parentresponse = requests.get(
                                 'https://dash.readme.com/api/v1/docs/'+parent, headers={'Authorization': 'Basic ' + os.environ["readmeapikey"], 'Accept': 'application/json'})
                             parentid = parentresponse.json()['id']
                         else:
                             parentid = existingparentdocid[0][1]
                         parentdocs.append((parent, parentid))
-                        print('parent = ' + parent +
-                              ' (' + str(parentid) + ')')
+                        # print('parent = ' + parent +
+                        #       ' (' + str(parentid) + ')')
                         parentdocstring = "parentDoc: " + str(parentid) + "\n"
 
                 print("---\n"+titlestring+categorystring +
