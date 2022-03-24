@@ -24,7 +24,7 @@ if categoriesresponse.status_code == 200:
                               == category][0]["id"]
                 categoryinfo = categories
                 print('title = ' + title)
-                print('category = ' + category)
+                print('category = ' + category + ' (' + str(categoryid) + ')')
                 if len(fullpath) > 2:
                     parent = fullpath[-2]
                     if parent == title.replace('.md', ''):
