@@ -80,8 +80,6 @@ if categoriesresponse.status_code == 200:
                 with open(os.path.join(dirpath, file)) as f:
                     fulltext = f.read()
                 # get the document to see if it exists
-                documentExists = requests.get(docsurl + '/' + slug, headers={
-                                              'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber}).json()
                 # create the document if it doesn't exist
                 payload = {
                     "hidden": False,
@@ -99,6 +97,8 @@ if categoriesresponse.status_code == 200:
                     "Content-Type": "application/json",
                     "Authorization": "Basic RFRvRnZYWFI1TnNVZVAzQUV1dEpOM2RCVTZhbnpIMVc6"
                 }
+                documentExists = requests.get(docsurl + '/' + slug, headers={
+                                              'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
                 if documentExists.status_code != 200:
                     print("Creating document: " + slug)
                     response = requests.request(
