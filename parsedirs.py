@@ -32,10 +32,13 @@ if categoriesresponse.status_code == 200:
                     else:
                         existingparentdocid = [
                             doc for doc in parentdocs if doc[0] == parent]
-                        print(existingparentdocid)
-                        parentresponse = requests.get(
-                            'https://dash.readme.com/api/v1/docs/'+parent, headers={'Authorization': 'Basic ' + os.environ["readmeapikey"], 'Accept': 'application/json'})
-                        parentid = parentresponse.json()['id']
+                        if len(existingparentdocid) == 0:
+                            print("searching for parent id")
+                            parentresponse = requests.get(
+                                'https://dash.readme.com/api/v1/docs/'+parent, headers={'Authorization': 'Basic ' + os.environ["readmeapikey"], 'Accept': 'application/json'})
+                            parentid = parentresponse.json()['id']
+                        else:
+                            parentid = existingparentdocid[1]
                         parentdocs.append((parent, parentid))
                         print('parent = ' + parent +
                               ' (' + str(parentid) + ')')
