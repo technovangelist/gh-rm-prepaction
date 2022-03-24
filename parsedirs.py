@@ -6,7 +6,7 @@ from distutils.version import StrictVersion
 
 parentdocs = list()
 rawreadmeapikey = os.environ["INPUT_READMEAPIKEY"]
-versionnumber = os.environ["INPUT_VERSIONNUMBER"]
+versionnumber = os.environ["INPUT_VERSIONNUMBER"].replace("v", "")
 srcignorelist = os.environ["INPUT_IGNORELIST"]
 docsdirectory = os.environ["INPUT_DOCSDIRECTORY"]
 
@@ -99,16 +99,21 @@ if categoriesresponse.status_code == 200:
                 }
                 documentExists = requests.get(docsurl + '/' + slug, headers={
                                               'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
+                print("headers: " + json.dumps(headers))
+                print("payload: " + json.dumps(payload))
                 if documentExists.status_code != 200:
-                    print("Creating document: " + slug)
-                    response = requests.request(
-                        "POST", docsurl, json=payload, headers=headers)
+                    print("Creating document: " + slug +
+                          ", version: " + versionnumber)
+                    # response = requests.request(
+                    #     "POST", docsurl, json=payload, headers=headers)
 
                     # update the document if it does exist
                 else:
-                    print("Updating document: " + slug)
-                    response = requests.request(
-                        "PUT", docsurl + '/' + slug, json=payload, headers=headers)
+                    print("Updating document: " + slug +
+                          ", versionnumber: " + versionnumber)
+
+                    # response = requests.request(
+                    #     "PUT", docsurl + '/' + slug, json=payload, headers=headers)
 
 # this was updating the document but i won't need this if i am posting them myself
 # with open(os.path.join(dirpath, file), "r+") as f:
