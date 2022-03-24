@@ -81,6 +81,7 @@ if categoriesresponse.status_code == 200:
                     fulltext = f.read()
                 # get the document to see if it exists
                 # create the document if it doesn't exist
+                print("**** " + slug + " ****")
                 payload = {
                     "hidden": False,
                     "type": "basic",
@@ -99,6 +100,7 @@ if categoriesresponse.status_code == 200:
                 }
                 documentExists = requests.get(docsurl + '/' + slug, headers={
                                               'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
+                print("DocumentInfo: " + json.dumps(documentExists))
                 print("headers: " + json.dumps(headers))
                 print("payload: " + json.dumps(payload))
                 if documentExists.status_code != 200:
