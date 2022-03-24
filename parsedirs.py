@@ -16,16 +16,19 @@ if categoriesresponse.status_code == 200:
         if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
             for file in filenames:
                 fullpath = os.path.join(dirpath, file).split('/')[1:]
-                title = fullpath[-1]
+                filename = fullpath[-1]
                 category = fullpath[0]
                 categoryid = [x for x in categories if x["title"]
                               == category][0]["id"]
                 categoryinfo = categories
-                print('title = ' + title)
+                with open(os.path.join(dirpath, file)) as f:
+                    filetitle = f.readline().rstrip()
+                print('title = ' + filetitle)
+                print('filename = ' + filename)
                 print('category = ' + category + ' (' + str(categoryid) + ')')
                 if len(fullpath) > 2:
                     parent = fullpath[-2]
-                    if parent == title.replace('.md', ''):
+                    if parent == filename.replace('.md', ''):
                         parent = fullpath[-3]
                     if parent == category:
                         parent = ""
