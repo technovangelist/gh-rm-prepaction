@@ -100,7 +100,8 @@ if categoriesresponse.status_code == 200:
                 }
                 documentExists = requests.get(docsurl + '/' + slug, headers={
                                               'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
-                print("DocumentInfo: " + documentExists)
+                print("Document Status Code: " documentExists.status_code)
+                print("Document JSON: " + str(documentExists.json()))
                 print("headers: " + json.dumps(headers))
                 print("payload: " + json.dumps(payload))
                 if documentExists.status_code != 200:
