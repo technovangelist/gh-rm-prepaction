@@ -54,6 +54,7 @@ for path in allpaths:
     filename = fullpath[-1]
     slug = filename.replace('.md', '')
     category = fullpath[0]
+    print("Category: " + category)
     categoryid = [x for x in categories if x["title"]
                   == category][0]["id"]
     categoryinfo = categories
