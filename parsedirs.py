@@ -30,94 +30,107 @@ categoriesresponse = requests.get(
     'https://dash.readme.com/api/v1/categories?perPage=100&page=1', headers={'Authorization': 'Basic ' + readmeapikey})
 if categoriesresponse.status_code == 200:
     categories = categoriesresponse.json()
+    allpaths = list()
     for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
-        dirnames.sort()
         if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
-            for file in filenames:
-                fullpath = os.path.join(dirpath, file).split('/')[1:]
-                print("Working on: " + os.path.join(dirpath, file))
-                filename = fullpath[-1]
-                slug = filename.replace('.md', '')
-                category = fullpath[0]
-                categoryid = [x for x in categories if x["title"]
-                              == category][0]["id"]
-                categoryinfo = categories
-                with open(os.path.join(dirpath, file)) as f:
-                    filetitle = f.readline().rstrip().replace('# ', '')
+            dirnames.sort()
+            filenames.sort()
+            for filename in filenames:
+                path = os.path.join(dirpath, filename)
+                allpaths.append(path)
 
-                titlestring = "title: " + filetitle + "\n"
-                # print('title = ' + filetitle)
-                # print('filename = ' + filename)
-                # print('category = ' + category + ' (' + str(categoryid) + ')')
-                categorystring = "category: " + categoryid + "\n"
-                hiddenstring = "hidden: false\n"
-                parentdocstring = ""
-                parentid = ""
-                if len(fullpath) > 2:
-                    parent = fullpath[-2]
-                    if parent == filename.replace('.md', ''):
-                        parent = fullpath[-3]
-                    if parent == category:
-                        parent = ""
-                    else:
-                        existingparentdocid = [
-                            doc for doc in parentdocs if doc[0] == parent]
-                        if len(existingparentdocid) == 0:
-                            # print("searching for parent id")
-                            parentresponse = requests.get(
-                                docsurl + '/' + parent,
-                                headers={'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json'})
-                            parentid = parentresponse.json()['id']
-                        else:
-                            parentid = existingparentdocid[0][1]
-                        parentdocs.append((parent, parentid))
-                        # print('parent = ' + parent +
-                        #       ' (' + str(parentid) + ')')
-                        parentdocstring = "parentDoc: " + str(parentid) + "\n"
+allpaths.sort(reverse=True)
+# print('\n'.join(map(str, allpaths)))
+for path in allpaths:
 
-                frontmatterstring = "---\n"+titlestring + \
-                    categorystring + hiddenstring+parentdocstring+"---\n"
-                with open(os.path.join(dirpath, file)) as f:
-                    fulltext = f.read()
-                # get the document to see if it exists
-                # create the document if it doesn't exist
-                print("**** " + slug + " ****")
-                payload = {
-                    "hidden": False,
-                    "type": "basic",
-                    "title": filetitle,
-                    "body": fulltext,
-                    "category": categoryid
-                }
-                if parentid is not None:
-                    payload["parentDoc"] = parentid
+    # for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
+    # dirnames.sort()
+    # if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
+    # for file in filenames:
+    # fullpath = os.path.join(dirpath, file).split('/')[1:]
+    print("Working on: " + path)
+    fullpath = path.split('/')[:5]
 
-                headers = {
-                    "Accept": "application/json",
-                    "x-readme-version": versionnumber,
-                    "Content-Type": "application/json",
-                    "Authorization": "Basic RFRvRnZYWFI1TnNVZVAzQUV1dEpOM2RCVTZhbnpIMVc6"
-                }
-                documentExists = requests.get(docsurl + '/' + slug, headers={
-                                              'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
-                print("Document Status Code: " +
-                      str(documentExists.status_code))
-                # print("Document JSON: " + str(documentExists.json()))
-                # print("headers: " + json.dumps(headers))
-                # print("payload: " + json.dumps(payload))
-                if documentExists.status_code != 200:
-                    print("Creating document: " + slug +
-                          ", version: " + versionnumber)
-                    response = requests.request(
-                        "POST", docsurl, json=payload, headers=headers)
+    filename = fullpath[-1]
+    slug = filename.replace('.md', '')
+    category = fullpath[0]
+    categoryid = [x for x in categories if x["title"]
+                  == category][0]["id"]
+    categoryinfo = categories
+    with open(path) as f:
+        filetitle = f.readline().rstrip().replace('# ', '')
 
-                    # update the document if it does exist
-                else:
-                    print("Updating document: " + slug +
-                          ", versionnumber: " + versionnumber)
+    titlestring = "title: " + filetitle + "\n"
+    # print('title = ' + filetitle)
+    # print('filename = ' + filename)
+    # print('category = ' + category + ' (' + str(categoryid) + ')')
+    categorystring = "category: " + categoryid + "\n"
+    hiddenstring = "hidden: false\n"
+    parentdocstring = ""
+    parentid = ""
+    if len(fullpath) > 2:
+        parent = fullpath[-2]
+        if parent == filename.replace('.md', ''):
+            parent = fullpath[-3]
+        if parent == category:
+            parent = ""
+        else:
+            existingparentdocid = [
+                doc for doc in parentdocs if doc[0] == parent]
+            if len(existingparentdocid) == 0:
+                # print("searching for parent id")
+                parentresponse = requests.get(
+                    docsurl + '/' + parent,
+                    headers={'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json'})
+                parentid = parentresponse.json()['id']
+            else:
+                parentid = existingparentdocid[0][1]
+            parentdocs.append((parent, parentid))
+            # print('parent = ' + parent +
+            #       ' (' + str(parentid) + ')')
+            parentdocstring = "parentDoc: " + str(parentid) + "\n"
 
-                    response = requests.request(
-                        "PUT", docsurl + '/' + slug, json=payload, headers=headers)
+    with open(os.path.join(dirpath, file)) as f:
+        fulltext = f.read()
+    # get the document to see if it exists
+    # create the document if it doesn't exist
+    print("**** " + slug + " ****")
+    payload = {
+        "hidden": False,
+        "type": "basic",
+        "title": filetitle,
+        "body": fulltext,
+        "category": categoryid
+    }
+    if parentid is not None:
+        payload["parentDoc"] = parentid
+
+    headers = {
+        "Accept": "application/json",
+        "x-readme-version": versionnumber,
+        "Content-Type": "application/json",
+        "Authorization": "Basic RFRvRnZYWFI1TnNVZVAzQUV1dEpOM2RCVTZhbnpIMVc6"
+    }
+    documentExists = requests.get(docsurl + '/' + slug, headers={
+                                  'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
+    print("Document Status Code: " +
+          str(documentExists.status_code))
+    # print("Document JSON: " + str(documentExists.json()))
+    # print("headers: " + json.dumps(headers))
+    # print("payload: " + json.dumps(payload))
+    if documentExists.status_code != 200:
+        print("Creating document: " + slug +
+              ", version: " + versionnumber)
+        response = requests.request(
+            "POST", docsurl, json=payload, headers=headers)
+
+        # update the document if it does exist
+    else:
+        print("Updating document: " + slug +
+              ", versionnumber: " + versionnumber)
+
+        response = requests.request(
+            "PUT", docsurl + '/' + slug, json=payload, headers=headers)
 
 # this was updating the document but i won't need this if i am posting them myself
 # with open(os.path.join(dirpath, file), "r+") as f:
