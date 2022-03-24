@@ -23,6 +23,7 @@ if categoriesresponse.status_code == 200:
                 categoryinfo = categories
                 with open(os.path.join(dirpath, file)) as f:
                     filetitle = f.readline().rstrip().replace('# ', '')
+
                 titlestring = "title: " + filetitle + "\n"
                 # print('title = ' + filetitle)
                 # print('filename = ' + filename)
@@ -51,5 +52,14 @@ if categoriesresponse.status_code == 200:
                         #       ' (' + str(parentid) + ')')
                         parentdocstring = "parentDoc: " + str(parentid) + "\n"
 
-                print("---\n"+titlestring+categorystring +
-                      hiddenstring+parentdocstring+"---\n")
+                with open(os.path.join(dirpath, file), "r+") as f:
+                    lines = f.readlines()
+                    f.seek(0)
+                    f.truncate()
+                    f.writeline("---")
+                    f.writeline(titlestring)
+                    f.writeline(categorystring)
+                    f.writeline(hiddenstring)
+                    f.writeline(parentdocstring)
+                    f.writeline("---")
+                    f.writelines(lines[1:])
