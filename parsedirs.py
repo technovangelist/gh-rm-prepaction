@@ -52,7 +52,7 @@ if categoriesresponse.status_code == 200:
                 categorystring = "category: " + categoryid + "\n"
                 hiddenstring = "hidden: false\n"
                 parentdocstring = ""
-                parentid
+                parentid = ""
                 if len(fullpath) > 2:
                     parent = fullpath[-2]
                     if parent == filename.replace('.md', ''):
