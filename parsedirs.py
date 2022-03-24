@@ -49,11 +49,11 @@ for path in allpaths:
     # for file in filenames:
     # fullpath = os.path.join(dirpath, file).split('/')[1:]
     print("Working on: " + path)
-    fullpath = path.split('/')[:6]
-
+    fullpath = path.split('/')
+    
     filename = fullpath[-1]
     slug = filename.replace('.md', '')
-    category = fullpath[0]
+    category = fullpath[1]
     print("Category: " + category)
     categoryid = [x for x in categories if x["title"]
                   == category][0]["id"]
