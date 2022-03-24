@@ -27,7 +27,7 @@ if not [x for x in existingversions if x["version"]
 ignorelist = [x.strip() for x in srcignorelist.split(',')
               if not srcignorelist == '']
 categoriesresponse = requests.get(
-    'https://dash.readme.com/api/v1/categories?perPage=100&page=1', headers={'Authorization': 'Basic ' + readmeapikey})
+    'https://dash.readme.com/api/v1/categories?perPage=100&page=1', headers={'Authorization': 'Basic ' + readmeapikey, 'x-readme-version': versionnumber})
 if categoriesresponse.status_code == 200:
     categories = categoriesresponse.json()
     allpaths = list()
