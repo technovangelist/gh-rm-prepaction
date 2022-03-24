@@ -9,9 +9,9 @@ inputs:
     description: "Comma separated list of directories under the docs directory we should ignore"
     required: true
     default: "images"
-outputs:
-  time: # id of output
-    description: "The time we greeted you"
+  readmeapikey:
+    description: "API Key for readme.io"
+    required: true
 runs:
   using: "docker"
   image: "Dockerfile"

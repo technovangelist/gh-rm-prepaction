@@ -1,8 +1,12 @@
 import os
 import requests
 import json
+import base64
 
 parentdocs = list()
+rawreadmeapikey = os.environ["INPUT_READMEAPIKEY"]
+readmeapikey = base64.b64encode(
+    rawreadmeapikey.encode('utf-8')).decode('utf-8')
 srcignorelist = os.environ["INPUT_IGNORELIST"]
 ignorelist = [x.strip() for x in srcignorelist.split(',')
               if not srcignorelist == '']
