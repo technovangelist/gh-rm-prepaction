@@ -22,7 +22,7 @@ if categoriesresponse.status_code == 200:
                               == category][0]["id"]
                 categoryinfo = categories
                 with open(os.path.join(dirpath, file)) as f:
-                    filetitle = f.readline().rstrip()
+                    filetitle = f.readline().rstrip().replace('# ', '')
                 print('title = ' + filetitle)
                 print('filename = ' + filename)
                 print('category = ' + category + ' (' + str(categoryid) + ')')
@@ -45,4 +45,5 @@ if categoriesresponse.status_code == 200:
                         parentdocs.append((parent, parentid))
                         print('parent = ' + parent +
                               ' (' + str(parentid) + ')')
+                print('parent = ' + parent)
                 print('---')
