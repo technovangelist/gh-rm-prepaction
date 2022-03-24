@@ -31,7 +31,6 @@ categoriesresponse = requests.get(
     'https://dash.readme.com/api/v1/categories?perPage=100&page=1', headers={'Authorization': 'Basic ' + readmeapikey})
 if categoriesresponse.status_code == 200:
     categories = categoriesresponse.json()
-
     for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
         if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
             for file in filenames:
