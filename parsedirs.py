@@ -2,6 +2,7 @@ import os
 import requests
 import json
 
+parentdocs = list()
 srcignorelist = os.environ["INPUT_IGNORELIST"]
 ignorelist = [x.strip() for x in srcignorelist.split(',')
               if not srcignorelist == '']
@@ -11,9 +12,6 @@ categoriesresponse = requests.get(
 if categoriesresponse.status_code == 200:
     categories = categoriesresponse.json()
 
-    # curl - -request GET \
-    #      - -url 'https://dash.readme.com/api/v1/categories?perPage=10&page=1' \
-    #      - -header 'Authorization: Basic R1ZUalN3bEp3RVRkbllWOEdtQ3F1YW00bGROV2FibUE6'
     for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
         if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
             for file in filenames:
@@ -32,5 +30,10 @@ if categoriesresponse.status_code == 200:
                     if parent == category:
                         parent = ""
                     else:
-                        print('parent = ' + parent)
+                        slug = title.replace('.md', '')
+                        parentresponse = requests.get(
+                            'https://dash.readme.com/api/v1/docs/'+slug, headers={'Authorization': 'Basic ' + os.environ["readmeapikey"], 'Accept': 'application/json'})
+                        parentid = parentresponse.json()['id']
+                        print('parent = ' + parent +
+                              ' (' + str(parentid) + ')')
                 print('---')
