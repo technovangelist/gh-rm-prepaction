@@ -31,6 +31,7 @@ categoriesresponse = requests.get(
 if categoriesresponse.status_code == 200:
     categories = categoriesresponse.json()
     for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
+        dirnames.sort()
         if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
             for file in filenames:
                 fullpath = os.path.join(dirpath, file).split('/')[1:]
