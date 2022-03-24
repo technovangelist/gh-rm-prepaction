@@ -20,7 +20,7 @@ existingversions = requests.get(versionurl, headers={
 existingversions.sort(key=lambda x: StrictVersion(x['version']), reverse=True)
 if not [x for x in existingversions if x["version"]
         == versionnumber]:
-    print("Creating a new version number")
+    print("Creating a new version number.")
     requests.post(versionurl, headers={
         'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'Content-Type': 'application/json'}, json={"is_beta": True, "version": versionnumber, "from": existingversions[0]["version"], "is_stable": False, "is_hidden": False}).json()
 
