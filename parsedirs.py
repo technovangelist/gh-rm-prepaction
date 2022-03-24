@@ -52,10 +52,11 @@ if categoriesresponse.status_code == 200:
                         #       ' (' + str(parentid) + ')')
                         parentdocstring = "parentDoc: " + str(parentid) + "\n"
 
-                frontmatterstring = "---\n"+titlestring+categorystring + hiddenstring+parentdocstring+"---\n")
+                frontmatterstring = "---\n"+titlestring + \
+                    categorystring + hiddenstring+parentdocstring+"---\n"
 
                 with open(os.path.join(dirpath, file), "r+") as f:
-                    lines=f.readlines()
+                    lines = f.readlines()
                     f.seek(0)
                     f.truncate()
                     f.write(frontmatterstring)
