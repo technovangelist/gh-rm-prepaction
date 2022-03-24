@@ -8,7 +8,7 @@ ignorelist = [x.strip() for x in srcignorelist.split(',')
               if not srcignorelist == '']
 docsdirectory = os.environ["INPUT_DOCSDIRECTORY"]
 categoriesresponse = requests.get(
-    'https://dash.readme.com/api/v1/categories?perPage=10&page=1', headers={'Authorization': 'Basic ' + os.environ["readmeapikey"]})
+    'https://dash.readme.com/api/v1/categories?perPage=100&page=1', headers={'Authorization': 'Basic ' + os.environ["readmeapikey"]})
 if categoriesresponse.status_code == 200:
     categories = categoriesresponse.json()
 
