@@ -69,7 +69,7 @@ for path in allpaths:
     hiddenstring = "hidden: false\n"
     parentdocstring = ""
     parentid = ""
-    if len(fullpath) > 2:
+    if len(fullpath) > 3:
         parent = fullpath[-2]
         if parent == filename.replace('.md', ''):
             parent = fullpath[-3]
@@ -93,7 +93,7 @@ for path in allpaths:
 
     with open(path) as f:
         fulltext = f.read()
-    print(fulltext)
+    # print(fulltext)
     # get the document to see if it exists
     # create the document if it doesn't exist
     print("**** " + slug + " ****")
