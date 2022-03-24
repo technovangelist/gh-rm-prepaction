@@ -6,23 +6,27 @@ from distutils.version import StrictVersion
 
 parentdocs = list()
 rawreadmeapikey = os.environ["INPUT_READMEAPIKEY"]
+versionnumber = os.environ["INPUT_VERSIONNUMBER"]
+srcignorelist = os.environ["INPUT_IGNORELIST"]
+docsdirectory = os.environ["INPUT_DOCSDIRECTORY"]
+
+versionurl = "https://dash.readme.com/api/v1/version"
+docsurl = "https://dash.readme.com/api/v1/docs"
+
 readmeapikey = base64.b64encode(
     rawreadmeapikey.encode('utf-8')).decode('utf-8')
-versionnumber = os.environ["INPUT_VERSIONNUMBER"]
-existingversions = requests.get("https://dash.readme.com/api/v1/version", headers={
+existingversions = requests.get(versionurl, headers={
                                 'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json'}).json()
 existingversions.sort(key=lambda x: StrictVersion(x['version']), reverse=True)
 if not [x for x in existingversions if x["version"]
         == versionnumber]:
     print("Creating a new version number")
-    requests.post("https://dash.readme.com/api/v1/version", headers={
+    requests.post(versionurl, headers={
         'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'Content-Type': 'application/json'}, json={"is_beta": True, "version": versionnumber, "from": existingversions[0]["version"], "is_stable": False, "is_hidden": False}).json()
 
 
-srcignorelist = os.environ["INPUT_IGNORELIST"]
 ignorelist = [x.strip() for x in srcignorelist.split(',')
               if not srcignorelist == '']
-docsdirectory = os.environ["INPUT_DOCSDIRECTORY"]
 categoriesresponse = requests.get(
     'https://dash.readme.com/api/v1/categories?perPage=100&page=1', headers={'Authorization': 'Basic ' + readmeapikey})
 if categoriesresponse.status_code == 200:
@@ -33,6 +37,7 @@ if categoriesresponse.status_code == 200:
             for file in filenames:
                 fullpath = os.path.join(dirpath, file).split('/')[1:]
                 filename = fullpath[-1]
+                slug = filename.replace('.md', '')
                 category = fullpath[0]
                 categoryid = [x for x in categories if x["title"]
                               == category][0]["id"]
@@ -47,6 +52,7 @@ if categoriesresponse.status_code == 200:
                 categorystring = "category: " + categoryid + "\n"
                 hiddenstring = "hidden: false\n"
                 parentdocstring = ""
+                parentid
                 if len(fullpath) > 2:
                     parent = fullpath[-2]
                     if parent == filename.replace('.md', ''):
@@ -59,7 +65,8 @@ if categoriesresponse.status_code == 200:
                         if len(existingparentdocid) == 0:
                             # print("searching for parent id")
                             parentresponse = requests.get(
-                                'https://dash.readme.com/api/v1/docs/'+parent, headers={'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json'})
+                                docsurl + '/' + parent,
+                                headers={'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json'})
                             parentid = parentresponse.json()['id']
                         else:
                             parentid = existingparentdocid[0][1]
@@ -70,10 +77,43 @@ if categoriesresponse.status_code == 200:
 
                 frontmatterstring = "---\n"+titlestring + \
                     categorystring + hiddenstring+parentdocstring+"---\n"
+                with open(os.path.join(dirpath, file)) as f:
+                    fulltext = f.read()
+                # get the document to see if it exists
+                documentExists = requests.get(docsurl + '/' + slug, headers={
+                                              'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber}).json()
+                # create the document if it doesn't exist
+                payload = {
+                    "hidden": False,
+                    "type": "basic",
+                    "title": filetitle,
+                    "body": fulltext,
+                    "category": categoryid
+                }
+                if parentid is not None:
+                    payload["parentDoc"] = parentid
 
-                with open(os.path.join(dirpath, file), "r+") as f:
-                    lines = f.readlines()
-                    f.seek(0)
-                    f.truncate()
-                    f.write(frontmatterstring)
-                    f.writelines(lines[1:])
+                headers = {
+                    "Accept": "application/json",
+                    "x-readme-version": versionnumber,
+                    "Content-Type": "application/json",
+                    "Authorization": "Basic RFRvRnZYWFI1TnNVZVAzQUV1dEpOM2RCVTZhbnpIMVc6"
+                }
+                if documentExists.status_code != 200:
+                    print("Creating document: " + slug)
+                    response = requests.request(
+                        "POST", docsurl, json=payload, headers=headers)
+
+                    # update the document if it does exist
+                else:
+                    print("Updating document: " + slug)
+                    response = requests.request(
+                        "PUT", docsurl + '/' + slug, json=payload, headers=headers)
+
+# this was updating the document but i won't need this if i am posting them myself
+# with open(os.path.join(dirpath, file), "r+") as f:
+#     lines = f.readlines()
+#     f.seek(0)
+#     f.truncate()
+#     f.write(frontmatterstring)
+#     f.writelines(lines[1:])
