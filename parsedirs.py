@@ -50,7 +50,7 @@ for path in allpaths:
     # fullpath = os.path.join(dirpath, file).split('/')[1:]
     print("Working on: " + path)
     fullpath = path.split('/')
-    
+
     filename = fullpath[-1]
     slug = filename.replace('.md', '')
     category = fullpath[1]
@@ -91,8 +91,9 @@ for path in allpaths:
             #       ' (' + str(parentid) + ')')
             parentdocstring = "parentDoc: " + str(parentid) + "\n"
 
-    with open(os.path.join(dirpath, file)) as f:
+    with open(path) as f:
         fulltext = f.read()
+    print(fulltext)
     # get the document to see if it exists
     # create the document if it doesn't exist
     print("**** " + slug + " ****")
