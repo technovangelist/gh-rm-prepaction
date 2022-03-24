@@ -108,16 +108,16 @@ if categoriesresponse.status_code == 200:
                 if documentExists.status_code != 200:
                     print("Creating document: " + slug +
                           ", version: " + versionnumber)
-                    # response = requests.request(
-                    #     "POST", docsurl, json=payload, headers=headers)
+                    response = requests.request(
+                        "POST", docsurl, json=payload, headers=headers)
 
                     # update the document if it does exist
                 else:
                     print("Updating document: " + slug +
                           ", versionnumber: " + versionnumber)
 
-                    # response = requests.request(
-                    #     "PUT", docsurl + '/' + slug, json=payload, headers=headers)
+                    response = requests.request(
+                        "PUT", docsurl + '/' + slug, json=payload, headers=headers)
 
 # this was updating the document but i won't need this if i am posting them myself
 # with open(os.path.join(dirpath, file), "r+") as f:
