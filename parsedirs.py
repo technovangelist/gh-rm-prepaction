@@ -24,7 +24,6 @@ if not [x for x in existingversions if x["version"]
     requests.post(versionurl, headers={
         'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'Content-Type': 'application/json'}, json={"is_beta": True, "version": versionnumber, "from": existingversions[0]["version"], "is_stable": False, "is_hidden": False}).json()
 
-
 ignorelist = [x.strip() for x in srcignorelist.split(',')
               if not srcignorelist == '']
 categoriesresponse = requests.get(
@@ -33,7 +32,7 @@ if categoriesresponse.status_code == 200:
     categories = categoriesresponse.json()
     for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
         if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
-            for file in filenames:
+            for file in filenames: 
                 fullpath = os.path.join(dirpath, file).split('/')[1:]
                 print("Working on " + os.path.join(dirpath, file))
                 filename = fullpath[-1]
