@@ -32,9 +32,9 @@ if categoriesresponse.status_code == 200:
     categories = categoriesresponse.json()
     for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
         if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
-            for file in filenames: 
+            for file in filenames:
                 fullpath = os.path.join(dirpath, file).split('/')[1:]
-                print("Working on " + os.path.join(dirpath, file))
+                print("Working on: " + os.path.join(dirpath, file))
                 filename = fullpath[-1]
                 slug = filename.replace('.md', '')
                 category = fullpath[0]
