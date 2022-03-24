@@ -37,7 +37,6 @@ if categoriesresponse.status_code == 200:
             for file in filenames:
                 fullpath = os.path.join(dirpath, file).split('/')[1:]
                 print("Working on " + os.path.join(dirpath, file))
-
                 filename = fullpath[-1]
                 slug = filename.replace('.md', '')
                 category = fullpath[0]
