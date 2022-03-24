@@ -49,7 +49,7 @@ for path in allpaths:
     # for file in filenames:
     # fullpath = os.path.join(dirpath, file).split('/')[1:]
     print("Working on: " + path)
-    fullpath = path.split('/')[:5]
+    fullpath = path.split('/')[:6]
 
     filename = fullpath[-1]
     slug = filename.replace('.md', '')
