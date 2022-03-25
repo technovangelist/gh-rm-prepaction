@@ -130,7 +130,7 @@ for path in allpaths:
 
     # print("Document JSON: " + str(documentExists.json()))
     if documentExists.status_code != 200:
-        print("DocumentExists: " + str(documentExists))
+        print("DocumentExists: " + str(documentExists.json()))
         print("Creating document: " + slug +
               ", version: " + versionnumber)
 
