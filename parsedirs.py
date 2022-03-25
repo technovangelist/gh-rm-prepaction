@@ -140,6 +140,7 @@ for path in allpaths:
               ", version: " + versionnumber)
 
         print("headers: " + json.dumps(headers))
+        payload["slug"] = slug
         print("payload: " + json.dumps(payload))
         response = requests.request(
             "POST", docsurl, json=payload, headers=headers)
