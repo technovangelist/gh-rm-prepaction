@@ -90,6 +90,7 @@ for path in allpaths:
                 parentresponse = requests.get(
                     docsurl + '/' + parent,
                     headers={'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json'})
+                print(parentresponse)
                 parentid = parentresponse.json()['id']
             else:
                 parentid = existingparentdocid[0][1]
