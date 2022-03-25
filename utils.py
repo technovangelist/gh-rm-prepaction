@@ -15,6 +15,8 @@ def getReadmeAPIKey():
 def getIgnoreList():
     srcignorelist = os.environ["INPUT_IGNORELIST"]
 
+    print("srcignorelist: " + srcignorelist)
+
     ignorelist = [x.strip() for x in srcignorelist.split(',')
                   if not srcignorelist == '']
 
