@@ -121,7 +121,7 @@ for path in allpaths:
         "Accept": "application/json",
         "x-readme-version": versionnumber,
         "Content-Type": "application/json",
-        "Authorization": "Basic RFRvRnZYWFI1TnNVZVAzQUV1dEpOM2RCVTZhbnpIMVc6"
+        "Authorization": "Basic " + readmeapikey
     }
     documentExists = requests.get(docsurl + '/' + slug, headers={
         'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
