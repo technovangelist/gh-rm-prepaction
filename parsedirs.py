@@ -89,9 +89,12 @@ for path in allpaths:
                 print("Parent ccc: " + parent)
                 parentresponse = requests.get(
                     docsurl + '/' + parent,
-                    headers={'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json'})
+                    headers={'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json',  'x-readme-version': versionnumber})
                 print(parentresponse)
-                parentid = parentresponse.json()['id']
+                try:
+                    parentid = parentresponse.json()['id']
+                except:
+                    print("parent problem. parent=" + parent)
             else:
                 parentid = existingparentdocid[0][1]
             parentdocs.append((parent, parentid))
