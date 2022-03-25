@@ -56,6 +56,8 @@ def getFileFullText(path):
     fulltext = fulltext.split("\n")[1:]
     fulltext = '\n'.join(fulltext).strip()
 
+    return fulltext
+
 
 def thisDocumentExists(readmeapikey, versionnumber, slug):
     docUrl = 'https://dash.readme.com/api/v1/docs/' + slug
