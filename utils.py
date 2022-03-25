@@ -103,20 +103,22 @@ def getParentID(fullPathArray, filename, category, docsurl, versionnumber, readm
 
 
 def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumber, parentdocs):
+    print("categories: " + str(categories))
     parentdocs = list()
     docsurl = "https://dash.readme.com/api/v1/docs"
     path = '/'.join(fullPathArray)
     filename = fullPathArray[-1]
     category = fullPathArray[1]
-    categoryid = [x for x in categories if x["title"]
-                  == category][0]["id"]
+    print("category: " + str(category))
+    categoryid = [x for x in categories if x["title"] == category][0]["id"]
+
     with open(path) as f:
         filetitle = f.readline().rstrip().replace('# ', '')
 
     # titlestring = "title: " + filetitle + "\n"
     # print('title = ' + filetitle)
     # print('filename = ' + filename)
-    # print('category = ' + category + ' (' + str(categoryid) + ')')
+    print('category = ' + category + ' (' + str(categoryid) + ')')
     # categorystring = "category: " + categoryid + "\n"
     # hiddenstring = "hidden: false\n"
     # parentdocstring = ""
