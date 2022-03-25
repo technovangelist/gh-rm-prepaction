@@ -107,6 +107,7 @@ for path in allpaths:
     # get the document to see if it exists
     # create the document if it doesn't exist
     print("**** " + slug + " ****")
+    print("Fulltext: " + fulltext)
     payload = {
         "hidden": False,
         "type": "basic",
