@@ -30,8 +30,8 @@ categoriesresponse = requests.get(
     'https://dash.readme.com/api/v1/categories?perPage=100&page=1', headers={'Authorization': 'Basic ' + readmeapikey, 'x-readme-version': versionnumber})
 if categoriesresponse.status_code == 200:
     categories = categoriesresponse.json()
-    # print("Categories: " + categories)
-    print("Categories: " + '\n'.join(map(str, categories)))
+
+    # print("Categories: " + '\n'.join(map(str, categories)))
     allpaths = list()
     for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
         if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
@@ -73,15 +73,19 @@ for path in allpaths:
     parentid = ""
     if len(fullpath) > 3:
         parent = fullpath[-2]
+        print("Parent: " + parent)
         if parent == filename.replace('.md', ''):
+            print("aaa")
             parent = fullpath[-3]
         if parent == category:
+            print("bbb")
             parent = ""
         else:
             existingparentdocid = [
                 doc for doc in parentdocs if doc[0] == parent]
             if len(existingparentdocid) == 0:
                 # print("searching for parent id")
+                print("Parent ccc: " + parent)
                 parentresponse = requests.get(
                     docsurl + '/' + parent,
                     headers={'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json'})
