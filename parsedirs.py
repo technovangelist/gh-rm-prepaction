@@ -71,6 +71,7 @@ for path in allpaths:
     hiddenstring = "hidden: false\n"
     parentdocstring = ""
     parentid = ""
+    print("FullpathLength: " + str(len(fullpath)))
     if len(fullpath) > 3:
         parent = fullpath[-2]
         print("Parent: " + parent)
@@ -120,7 +121,7 @@ for path in allpaths:
         "Authorization": "Basic RFRvRnZYWFI1TnNVZVAzQUV1dEpOM2RCVTZhbnpIMVc6"
     }
     documentExists = requests.get(docsurl + '/' + slug, headers={
-                                  'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
+        'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
     print("Document Status Code: " +
           str(documentExists.status_code))
     # print("Document JSON: " + str(documentExists.json()))
