@@ -17,9 +17,9 @@ docsurl = "https://dash.readme.com/api/v1/docs"
 
 readmeapikey = getReadmeAPIKey()
 ignorelist = getIgnoreList()
-categories = getCategories(readmeapikey, versionnumber)
 
 ensureVersionExists(readmeapikey, versionnumber)
+categories = getCategories(readmeapikey, versionnumber)
 
 allpaths = getAllDocumentPaths(docsdirectory, ignorelist)
 
@@ -56,4 +56,3 @@ for path in allpaths:
         response = requests.request(
             "PUT", docsurl + '/' + slug, json=payload, headers=headers)
         print(response)
-
