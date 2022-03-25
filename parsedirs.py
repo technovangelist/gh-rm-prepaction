@@ -110,7 +110,8 @@ for path in allpaths:
         "hidden": False,
         "type": "basic",
         "title": filetitle,
-        "body": fulltext,
+        # "body": fulltext,
+        "body": "test text",
         "category": categoryid
     }
     if parentid is not None:
