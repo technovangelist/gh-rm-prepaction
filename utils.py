@@ -59,7 +59,7 @@ def getFileFullText(path):
     return fulltext
 
 
-def thisDocumentExists(readmeapikey, versionnumber, slug):
+def thisDocumentAlreadyExists(readmeapikey, versionnumber, slug):
     docUrl = 'https://dash.readme.com/api/v1/docs/' + slug
     docresponse = requests.get(
         docUrl,
@@ -70,3 +70,70 @@ def thisDocumentExists(readmeapikey, versionnumber, slug):
         return True
     else:
         return False
+
+
+def getParentID(fullPathArray, filename, category, docsurl, versionnumber, readmeapikey, parentdocs)):
+    parent=""
+    parentid=""
+
+    if len(fullPathArray) > 3:
+        parent=fullPathArray[-2]
+        if parent == filename.replace('.md', ''):
+            parent=fullPathArray[-3]
+        if parent == category:
+
+            parent=""
+        else:
+            existingparentdocid=[
+                doc for doc in parentdocs if doc[0] == parent]
+            if len(existingparentdocid) == 0:
+                parentresponse = requests.get(
+                    docsurl + '/' + parent,
+                    headers = {'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json',  'x-readme-version': versionnumber})
+
+                try:
+                    parentid=parentresponse.json()['id']
+                except:
+                    print("parent problem. parent=" + parent)
+            else:
+                parentid=existingparentdocid[0][1]
+            # parentdocs.append((parent, parentid))
+
+    return parent, parentid
+
+def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumber, parentdocs):
+    parentdocs=list()
+    docsurl="https://dash.readme.com/api/v1/docs"
+    path='/'.join(fullPathArray)
+    filename=fullPathArray[-1]
+    category=fullPathArray[1]
+    categoryid=[x for x in categories if x["title"]
+                  == category][0]["id"]
+    with open(path) as f:
+        filetitle = f.readline().rstrip().replace('# ', '')
+
+    # titlestring = "title: " + filetitle + "\n"
+    # print('title = ' + filetitle)
+    # print('filename = ' + filename)
+    # print('category = ' + category + ' (' + str(categoryid) + ')')
+    # categorystring = "category: " + categoryid + "\n"
+    # hiddenstring = "hidden: false\n"
+    # parentdocstring = ""
+    parent, parentid = getParentID(fullPathArray, filename, category, docsurl, versionnumber, readmeapikey, parentdocs)
+    
+    print("FullpathLength: " + str(len(fullPathArray)))
+    
+
+    fulltext = getFileFullText(path)
+
+    payload = {
+        "hidden": False,
+        "type": "basic",
+        "title": filetitle,
+        "body": fulltext,
+        "category": categoryid
+    }
+    if parentid is not "":
+        payload["parentDoc"] = parentid
+
+    return payload, parent, parentid
