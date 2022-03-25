@@ -1,11 +1,11 @@
+from versions import ensureVersionExists
 import os
 from pydoc import doc
 import requests
 import json
 import base64
 from distutils.version import StrictVersion
-from utils import getReadmeAPIKey, getIgnoreList, getCategories
-from versions import ensureVersionExists
+from utils import getReadmeAPIKey, getIgnoreList, getCategories, getAllDocumentPaths, getFileFullText, thisDocumentExists
 
 parentdocs = list()
 allpaths = list()
@@ -21,23 +21,10 @@ categories = getCategories(readmeapikey, versionnumber)
 
 ensureVersionExists(readmeapikey, versionnumber)
 
-for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
-    if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
-        dirnames.sort()
-        filenames.sort()
-        for filename in filenames:
-            path = os.path.join(dirpath, filename)
-            allpaths.append(path)
+allpaths = getAllDocumentPaths(docsdirectory, ignorelist)
 
-allpaths.sort(reverse=True)
 # print('\n'.join(map(str, allpaths)))
 for path in allpaths:
-
-    # for (dirpath, dirnames, filenames) in os.walk(docsdirectory):
-    # dirnames.sort()
-    # if not any(dirpath.startswith(docsdirectory + "/" + ignore) for ignore in ignorelist):
-    # for file in filenames:
-    # fullpath = os.path.join(dirpath, file).split('/')[1:]
     print("Working on: " + path)
     fullpath = path.split('/')
 
@@ -88,16 +75,8 @@ for path in allpaths:
             #       ' (' + str(parentid) + ')')
             parentdocstring = "parentDoc: " + str(parentid) + "\n"
 
-    with open(path) as f:
-        fulltext = f.read()
-    fulltext = fulltext.split("\n")[1:]
-    fulltext = '\n'.join(fulltext).strip()
+    fulltext = getFileFullText(path)
 
-    # print(fulltext)
-    # get the document to see if it exists
-    # create the document if it doesn't exist
-    print("**** " + slug + " ****")
-    print("Fulltext: " + fulltext)
     payload = {
         "hidden": False,
         "type": "basic",
@@ -115,24 +94,9 @@ for path in allpaths:
         "Content-Type": "application/json",
         "Authorization": "Basic " + readmeapikey
     }
-    docExistHeaders = {
-        'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber}
-    print("docExistHeaders: " + str(docExistHeaders))
-    docExistUrl = docsurl + "/" + slug
-    print("docExistUrl: " + docExistUrl)
-    documentExists = requests.get(docExistUrl, headers=docExistHeaders)
-    print("Document Status Code: " +
-          str(documentExists.status_code))
 
-    # print("Document JSON: " + str(documentExists.json()))
-    if documentExists.status_code != 200:
-        print("DocumentExists: " + str(documentExists.json()))
-        print("Creating document: " + slug +
-              ", version: " + versionnumber)
-
-        print("headers: " + json.dumps(headers))
+    if not thisDocumentExists(readmeapikey, versionnumber, slug):
         payload["slug"] = slug
-        print("payload: " + json.dumps(payload))
         response = requests.request(
             "POST", docsurl, json=payload, headers=headers)
 
