@@ -84,11 +84,11 @@ for path in allpaths:
                 doc for doc in parentdocs if doc[0] == parent]
             if len(existingparentdocid) == 0:
                 # print("searching for parent id")
-                
+
                 parentresponse = requests.get(
                     docsurl + '/' + parent,
                     headers={'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json',  'x-readme-version': versionnumber})
-                
+
                 try:
                     parentid = parentresponse.json()['id']
                 except:
@@ -127,11 +127,12 @@ for path in allpaths:
     print("Document Status Code: " +
           str(documentExists.status_code))
     # print("Document JSON: " + str(documentExists.json()))
-    # print("headers: " + json.dumps(headers))
-    # print("payload: " + json.dumps(payload))
     if documentExists.status_code != 200:
         print("Creating document: " + slug +
               ", version: " + versionnumber)
+
+        print("headers: " + json.dumps(headers))
+        print("payload: " + json.dumps(payload))
         response = requests.request(
             "POST", docsurl, json=payload, headers=headers)
 
