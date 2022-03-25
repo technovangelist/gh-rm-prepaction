@@ -127,8 +127,10 @@ for path in allpaths:
         'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
     print("Document Status Code: " +
           str(documentExists.status_code))
+
     # print("Document JSON: " + str(documentExists.json()))
     if documentExists.status_code != 200:
+        print("DocumentExists: " + str(documentExists))
         print("Creating document: " + slug +
               ", version: " + versionnumber)
 
