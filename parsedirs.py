@@ -1,4 +1,5 @@
 import os
+from pydoc import doc
 import requests
 import json
 import base64
@@ -123,8 +124,12 @@ for path in allpaths:
         "Content-Type": "application/json",
         "Authorization": "Basic " + readmeapikey
     }
-    documentExists = requests.get(docsurl + '/' + slug, headers={
-        'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber})
+    docExistHeaders = {
+        'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json', 'x-readme-version': versionnumber}
+    print("docExistHeaders: " + str(docExistHeaders))
+    docExistUrl = docsurl + "/" + slug
+    print("docExistUrl: " + docExistUrl)
+    documentExists = requests.get(docExistUrl, headers=docExistHeaders)
     print("Document Status Code: " +
           str(documentExists.status_code))
 
