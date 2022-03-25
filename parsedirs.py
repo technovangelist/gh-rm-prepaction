@@ -103,6 +103,9 @@ for path in allpaths:
 
     with open(path) as f:
         fulltext = f.read()
+    fulltext = fulltext.split("\n")[1:]
+    fulltext = '\n'.join(fulltext).strip()
+
     # print(fulltext)
     # get the document to see if it exists
     # create the document if it doesn't exist
