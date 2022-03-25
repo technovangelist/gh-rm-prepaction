@@ -102,6 +102,41 @@ def getParentID(fullPathArray, filename, category, docsurl, versionnumber, readm
     return parent, parentid
 
 
+def imageStringSwap(imagestring):
+    filename = imagestring.split('/')[-1]
+    print("filename: " + filename)
+    return "https://infrahq.sirv.com/docs/" + filename
+
+
+def replaceURL(srcItem):
+    fullurl = srcItem[0]
+    alttext = srcItem[1]
+    url = srcItem[2]
+    optionalpart = srcItem[3]
+
+    newurl = '[block:html]\n{"html": "<img class=\'Sirv\' data-src=\'' + \
+        imageStringSwap(url) + '\' alt=\'' + alttext + '\'/>"}\n[/block]'
+    # newurl = "!["+alttext+"]("+imageStringSwap(url) + optionalpart+")"
+    print("newurl: " + newurl)
+    return newurl
+
+
+def ghToRmMDImages(inputtext):
+    foundmatches = re.findall(
+        r'(?P<fullimg>!\[(?P<alttext>.*?)\]\((?P<filename>.*?)(?=\"|\))(?P<optionalpart>\".*\")?\)?)', inputtext)
+
+    outputtext = inputtext
+
+    for item in foundmatches:
+        fullurl = item[0]
+        print("fullurl: " + fullurl)
+        print("fullimg: " + item[0])
+
+        newURL = replaceURL(item)
+        outputtext = outputtext.replace(fullurl, newURL)
+    return outputtext
+
+
 def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumber, parentdocs):
     print("categories: " + str(categories))
     parentdocs = list()
@@ -128,6 +163,7 @@ def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumb
     print("FullpathLength: " + str(len(fullPathArray)))
 
     fulltext = getFileFullText(path)
+    fulltext = ghToRmMDImages(fulltext)
 
     payload = {
         "hidden": False,
