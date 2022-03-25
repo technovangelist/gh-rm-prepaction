@@ -72,42 +72,43 @@ def thisDocumentAlreadyExists(readmeapikey, versionnumber, slug):
         return False
 
 
-def getParentID(fullPathArray, filename, category, docsurl, versionnumber, readmeapikey, parentdocs)):
-    parent=""
-    parentid=""
+def getParentID(fullPathArray, filename, category, docsurl, versionnumber, readmeapikey, parentdocs):
+    parent = ""
+    parentid = ""
 
     if len(fullPathArray) > 3:
-        parent=fullPathArray[-2]
+        parent = fullPathArray[-2]
         if parent == filename.replace('.md', ''):
-            parent=fullPathArray[-3]
+            parent = fullPathArray[-3]
         if parent == category:
 
-            parent=""
+            parent = ""
         else:
-            existingparentdocid=[
+            existingparentdocid = [
                 doc for doc in parentdocs if doc[0] == parent]
             if len(existingparentdocid) == 0:
                 parentresponse = requests.get(
                     docsurl + '/' + parent,
-                    headers = {'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json',  'x-readme-version': versionnumber})
+                    headers={'Authorization': 'Basic ' + readmeapikey, 'Accept': 'application/json',  'x-readme-version': versionnumber})
 
                 try:
-                    parentid=parentresponse.json()['id']
+                    parentid = parentresponse.json()['id']
                 except:
                     print("parent problem. parent=" + parent)
             else:
-                parentid=existingparentdocid[0][1]
+                parentid = existingparentdocid[0][1]
             # parentdocs.append((parent, parentid))
 
     return parent, parentid
 
+
 def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumber, parentdocs):
-    parentdocs=list()
-    docsurl="https://dash.readme.com/api/v1/docs"
-    path='/'.join(fullPathArray)
-    filename=fullPathArray[-1]
-    category=fullPathArray[1]
-    categoryid=[x for x in categories if x["title"]
+    parentdocs = list()
+    docsurl = "https://dash.readme.com/api/v1/docs"
+    path = '/'.join(fullPathArray)
+    filename = fullPathArray[-1]
+    category = fullPathArray[1]
+    categoryid = [x for x in categories if x["title"]
                   == category][0]["id"]
     with open(path) as f:
         filetitle = f.readline().rstrip().replace('# ', '')
@@ -119,10 +120,10 @@ def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumb
     # categorystring = "category: " + categoryid + "\n"
     # hiddenstring = "hidden: false\n"
     # parentdocstring = ""
-    parent, parentid = getParentID(fullPathArray, filename, category, docsurl, versionnumber, readmeapikey, parentdocs)
-    
+    parent, parentid = getParentID(
+        fullPathArray, filename, category, docsurl, versionnumber, readmeapikey, parentdocs)
+
     print("FullpathLength: " + str(len(fullPathArray)))
-    
 
     fulltext = getFileFullText(path)
 
