@@ -114,7 +114,7 @@ for path in allpaths:
         "body": "test text",
         "category": categoryid
     }
-    if parentid is not None:
+    if parentid is not "":
         payload["parentDoc"] = parentid
 
     headers = {
