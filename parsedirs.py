@@ -137,6 +137,7 @@ for path in allpaths:
         response = requests.request(
             "POST", docsurl, json=payload, headers=headers)
 
+        print(response)
         # update the document if it does exist
     else:
         print("Updating document: " + slug +
@@ -144,7 +145,7 @@ for path in allpaths:
 
         response = requests.request(
             "PUT", docsurl + '/' + slug, json=payload, headers=headers)
-
+        print(response)
 # this was updating the document but i won't need this if i am posting them myself
 # with open(os.path.join(dirpath, file), "r+") as f:
 #     lines = f.readlines()
