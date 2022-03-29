@@ -197,6 +197,7 @@ def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumb
 
     fulltext = getFileFullText(path)
     fulltextwithblockquotes = ghToRmBlockQuotes(fulltext)
+    print(fulltextwithblockquotes)
     fulltextwithimages = ghToRmMDImages(fulltextwithblockquotes)
 
     payload = {
