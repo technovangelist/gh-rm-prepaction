@@ -104,3 +104,4 @@ dist
 .tern-port
 
 testfiles
+.DS_Store
