@@ -162,9 +162,9 @@ def ghToRmBlockQuotes(inputtext: str):
 
     for item in foundquotes:
         oldblock = item[0]
-        print(oldblock)
+        # print(oldblock)
         newblock = replaceBlockQuote(item)
-        print(newblock)
+        # print(newblock)
         outputtext = outputtext.replace(oldblock, newblock)
 
     return outputtext
@@ -197,7 +197,7 @@ def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumb
 
     fulltext = getFileFullText(path)
     fulltextwithblockquotes = ghToRmBlockQuotes(fulltext)
-    print(fulltextwithblockquotes)
+    # print(fulltextwithblockquotes)
     fulltextwithimages = ghToRmMDImages(fulltextwithblockquotes)
 
     payload = {
