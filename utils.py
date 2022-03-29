@@ -195,14 +195,14 @@ def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumb
     # print("FullpathLength: " + str(len(fullPathArray)))
 
     fulltext = getFileFullText(path)
-    fulltext = ghToRmBlockQuotes(fulltext)
-    fulltext = ghToRmMDImages(fulltext)
+    fulltextwithblockquotes = ghToRmBlockQuotes(fulltext)
+    fulltextwithimages = ghToRmMDImages(fulltextwithblockquotes)
 
     payload = {
         "hidden": False,
         "type": "basic",
         "title": filetitle,
-        "body": fulltext,
+        "body": fulltextwithimages,
         "category": categoryid
     }
     if parentid is not "":
