@@ -195,8 +195,8 @@ def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumb
     # print("FullpathLength: " + str(len(fullPathArray)))
 
     fulltext = getFileFullText(path)
-    fulltext = ghToRmMDImages(fulltext)
     fulltext = ghToRmBlockQuotes(fulltext)
+    fulltext = ghToRmMDImages(fulltext)
 
     payload = {
         "hidden": False,
