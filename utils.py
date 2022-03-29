@@ -156,9 +156,9 @@ def ghToRmMDImages(inputtext):
 
 
 def ghToRmBlockQuotes(inputtext):
-    foundquotes = re.findall(
-        r"^(?P<fullquote>>\s?(:(?P<emoji>\w+)?:)?\s?(?P<message>.*))$", inputtext, re.IGNORECASE | re.MULTILINE)
     outputtext = inputtext
+    foundquotes = re.findall(
+        r"^(?P<fullquote>>\s?(:(?P<emoji>\w+)?:)?\s?(?P<message>.*))$", outputtext, re.IGNORECASE | re.MULTILINE)
 
     for item in foundquotes:
         oldblock = item[0]
@@ -166,7 +166,7 @@ def ghToRmBlockQuotes(inputtext):
         newblock = replaceBlockQuote(item)
         print(newblock)
         outputtext = outputtext.replace(oldblock, newblock)
-        print(outputtext)
+
     return outputtext
 
 
