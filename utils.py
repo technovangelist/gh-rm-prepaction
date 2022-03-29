@@ -124,7 +124,7 @@ def replaceURL(srcItem):
 
 def replaceBlockQuote(srcitem):
     emoji = srcitem[2]
-    callouttype = ""
+    callouttype = "info"
     if emoji == 'exclamation':
         callouttype = "danger"
     elif emoji == 'warning':
