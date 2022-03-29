@@ -133,8 +133,8 @@ def replaceBlockQuote(srcitem):
         callouttype = "success"
     message = srcitem[3]
 
-    newBlock = '[block:callout]\n{"type": '+callouttype+', "body": ' + \
-        message+'}\n[/block]'
+    newBlock = '[block:callout]\n{"type": '+callouttype+', "body": "' + \
+        message+'"}\n[/block]'
 
     return newBlock
 
