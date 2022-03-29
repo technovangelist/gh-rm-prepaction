@@ -133,13 +133,13 @@ def replaceBlockQuote(srcitem):
         callouttype = "success"
     message = srcitem[3]
 
-    newBlock = '[block:callout]\n{"type": '+callouttype+', "body": "' + \
+    newBlock = '[block:callout]\n{"type": "'+callouttype+'", "body": "' + \
         message+'"}\n[/block]'
 
     return newBlock
 
 
-def ghToRmMDImages(inputtext):
+def ghToRmMDImages(inputtext: str):
     foundmatches = re.findall(
         r'(?P<fullimg>!\[(?P<alttext>.*?)\]\((?P<filename>.*?)(?=\"|\))(?P<optionalpart>\".*\")?\)?)', inputtext)
 
@@ -155,7 +155,7 @@ def ghToRmMDImages(inputtext):
     return outputtext
 
 
-def ghToRmBlockQuotes(inputtext):
+def ghToRmBlockQuotes(inputtext: str):
     outputtext = inputtext
     foundquotes = re.findall(
         r"^(?P<fullquote>>\s?(:(?P<emoji>\w+)?:)?\s?(?P<message>.*))$", outputtext, re.IGNORECASE | re.MULTILINE)
