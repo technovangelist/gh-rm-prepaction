@@ -29,7 +29,7 @@ for path in allpaths:
     filename = fullpath[-1]
     slug = filename.replace('.md', '')
 
-  # start genearte doc payload
+  # start generate doc payload
 
     payload, parent, parentid = generateDocumentPayload(
         fullpath, categories, readmeapikey, versionnumber, parentdocs)

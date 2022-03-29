@@ -122,6 +122,30 @@ def replaceURL(srcItem):
     return newurl
 
 
+def replaceBlockQuote(srcitem):
+    emoji = srcitem[1]
+    callouttype = ""
+    if emoji == 'exclamation':
+        callouttype = "danger"
+    elif emoji == 'warning':
+        callouttype = "warning"
+    elif emoji == 'information_source':
+        callouttype = "info"
+    message = srcitem[3]
+
+    newBlock = '[block:callout]\n{"type": "danger", "body": ' + \
+        message+'}\n[/block]'
+
+    return newBlock
+
+    # [block:callout]
+# {
+#     "type": "danger",
+#     "body": "The Okta client secret is sensitive information which should not be stored in the Infra configuration file. In order for Infra to access this secret values it should be stored in a secret provider."
+# }
+# [/block]
+
+
 def ghToRmMDImages(inputtext):
     foundmatches = re.findall(
         r'(?P<fullimg>!\[(?P<alttext>.*?)\]\((?P<filename>.*?)(?=\"|\))(?P<optionalpart>\".*\")?\)?)', inputtext)
@@ -135,6 +159,17 @@ def ghToRmMDImages(inputtext):
 
         newURL = replaceURL(item)
         outputtext = outputtext.replace(fullurl, newURL)
+    return outputtext
+
+
+def ghToRmBlockQuotes(inputtext):
+    foundquotes = re.findall(r'>\s?(:(?P<emoji>\w+)?:)?\s?(?P<message>.*)')
+    outputtext = inputtext
+
+    for item in foundquotes:
+        oldblock = item[0]
+        newblock = replaceBlockQuote(item)
+        outputtext = outputtext.replace(oldblock, newblock)
     return outputtext
 
 
@@ -165,6 +200,7 @@ def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumb
 
     fulltext = getFileFullText(path)
     fulltext = ghToRmMDImages(fulltext)
+    fulltext = ghToRmBlockQuotes(fulltext)
 
     payload = {
         "hidden": False,
