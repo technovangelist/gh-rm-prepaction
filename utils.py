@@ -123,27 +123,20 @@ def replaceURL(srcItem):
 
 
 def replaceBlockQuote(srcitem):
-    emoji = srcitem[1]
+    emoji = srcitem[2]
     callouttype = ""
     if emoji == 'exclamation':
         callouttype = "danger"
     elif emoji == 'warning':
         callouttype = "warning"
-    elif emoji == 'information_source':
-        callouttype = "info"
+    elif emoji == 'ok':
+        callouttype = "success"
     message = srcitem[3]
 
-    newBlock = '[block:callout]\n{"type": "danger", "body": ' + \
+    newBlock = '[block:callout]\n{"type": '+callouttype+', "body": ' + \
         message+'}\n[/block]'
 
     return newBlock
-
-    # [block:callout]
-# {
-#     "type": "danger",
-#     "body": "The Okta client secret is sensitive information which should not be stored in the Infra configuration file. In order for Infra to access this secret values it should be stored in a secret provider."
-# }
-# [/block]
 
 
 def ghToRmMDImages(inputtext):
@@ -168,9 +161,9 @@ def ghToRmBlockQuotes(inputtext):
     outputtext = inputtext
 
     for item in foundquotes:
-        print(item)
         oldblock = item[0]
         newblock = replaceBlockQuote(item)
+        print(newblock)
         outputtext = outputtext.replace(oldblock, newblock)
     return outputtext
 
