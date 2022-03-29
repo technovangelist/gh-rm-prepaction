@@ -47,7 +47,7 @@ for path in allpaths:
         response = requests.request(
             "POST", docsurl, json=payload, headers=headers)
 
-        print(response)
+        # print(response)
         # update the document if it does exist
     else:
         print("Updating document: " + slug +
@@ -55,4 +55,4 @@ for path in allpaths:
 
         response = requests.request(
             "PUT", docsurl + '/' + slug, json=payload, headers=headers)
-        print(response)
+        # print(response)

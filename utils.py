@@ -105,7 +105,7 @@ def getParentID(fullPathArray, filename, category, docsurl, versionnumber, readm
 
 def imageStringSwap(imagestring):
     filename = imagestring.split('/')[-1]
-    print("filename: " + filename)
+    # print("filename: " + filename)
     return "https://infrahq.sirv.com/docs/" + filename
 
 
@@ -147,8 +147,8 @@ def ghToRmMDImages(inputtext):
 
     for item in foundmatches:
         fullurl = item[0]
-        print("fullurl: " + fullurl)
-        print("fullimg: " + item[0])
+        # print("fullurl: " + fullurl)
+        # print("fullimg: " + item[0])
 
         newURL = replaceURL(item)
         outputtext = outputtext.replace(fullurl, newURL)
@@ -170,13 +170,13 @@ def ghToRmBlockQuotes(inputtext):
 
 
 def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumber, parentdocs):
-    print("categories: " + str(categories))
+    # print("categories: " + str(categories))
     parentdocs = list()
     docsurl = "https://dash.readme.com/api/v1/docs"
     path = '/'.join(fullPathArray)
     filename = fullPathArray[-1]
     category = fullPathArray[1]
-    print("category: " + str(category))
+    # print("category: " + str(category))
     categoryid = [x for x in categories if x["title"] == category][0]["id"]
 
     with open(path) as f:
@@ -185,14 +185,14 @@ def generateDocumentPayload(fullPathArray, categories, readmeapikey, versionnumb
     # titlestring = "title: " + filetitle + "\n"
     # print('title = ' + filetitle)
     # print('filename = ' + filename)
-    print('category = ' + category + ' (' + str(categoryid) + ')')
+    # print('category = ' + category + ' (' + str(categoryid) + ')')
     # categorystring = "category: " + categoryid + "\n"
     # hiddenstring = "hidden: false\n"
     # parentdocstring = ""
     parent, parentid = getParentID(
         fullPathArray, filename, category, docsurl, versionnumber, readmeapikey, parentdocs)
 
-    print("FullpathLength: " + str(len(fullPathArray)))
+    # print("FullpathLength: " + str(len(fullPathArray)))
 
     fulltext = getFileFullText(path)
     fulltext = ghToRmMDImages(fulltext)
