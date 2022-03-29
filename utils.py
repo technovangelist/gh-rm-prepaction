@@ -168,6 +168,7 @@ def ghToRmBlockQuotes(inputtext):
     outputtext = inputtext
 
     for item in foundquotes:
+        print(item)
         oldblock = item[0]
         newblock = replaceBlockQuote(item)
         outputtext = outputtext.replace(oldblock, newblock)
