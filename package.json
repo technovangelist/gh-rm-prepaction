@@ -1,0 +1,20 @@
+{
+  "name": "gh-rm-prepaction",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:technovangelist/gh-rm-prepaction.git",
+  "author": "Matthew Williams <m@technovangelist.com>",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "@swc/cli": "^0.1.56",
+    "@swc/core": "^1.2.160",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^17.0.23",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.4",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "@actions/core": "^1.6.0"
+  }
+}
